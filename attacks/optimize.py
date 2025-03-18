@@ -1,5 +1,5 @@
-from losses.poincare import poincare_loss
-from utils.stylegan import project_onto_l1_ball
+from IF_GMI.losses.poincare import poincare_loss
+from IF_GMI.utils.stylegan import project_onto_l1_ball
 
 import torch
 import torch.nn as nn

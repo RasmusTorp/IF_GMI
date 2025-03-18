@@ -5,9 +5,12 @@ import os
 import csv
 import yaml
 from torchvision.utils import save_image
-from utils.stylegan import create_image
+
 from pathlib import Path
-from .attack_config_parser import AttackConfigParser
+from IF_GMI.utils.attack_config_parser import AttackConfigParser
+
+from IF_GMI.utils.stylegan import create_image
+
 class Tee(object):
     """A workaround method to print in console and write to log file
     """

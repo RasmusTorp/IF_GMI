@@ -10,7 +10,8 @@ def change(path, name):
 
 if __name__ == '__main__':
     # modify the source .pkl to .pth
-    sys.path.append('stylegan2_intermediate')
-    path = 'stylegan2_intermediate/xxx.pkl'
-    name = 'xxx.pth'
+    sys.path.append('IF_GMI/stylegan2_intermediate')
+    model_name = "ffhq"
+    path = f'stylegan2-ada-pytorch/{model_name}.pkl'
+    name = f'stylegan2-ada-pytorch/{model_name}.pth'
     change(path=path, name=name)

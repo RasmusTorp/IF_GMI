@@ -7,16 +7,18 @@ import numpy as np
 import timm
 import torch
 import torch.nn as nn
-from metrics.accuracy import Accuracy
+
 from torch.utils.data import DataLoader
 from torchvision.models import densenet, inception, resnet
 from torchvision.transforms import (ColorJitter, RandomCrop,
                                     RandomHorizontalFlip, Resize)
 from tqdm import tqdm
-from models.base_model import BaseModel
+
+from IF_GMI.models.base_model import BaseModel
+from IF_GMI.metrics.accuracy import Accuracy
 
 import sys
-from ResNeSt.resnest.torch import resnest50, resnest101, resnest200, resnest269
+# from ResNeSt.resnest.torch import resnest50, resnest101, resnest200, resnest269
 
 class Classifier(BaseModel):
 

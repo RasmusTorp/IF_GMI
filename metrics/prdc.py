@@ -1,10 +1,12 @@
-from utils.stylegan import create_image
-from datasets.custom_subset import SingleClassSubset
+
 import sys
 
 import numpy as np
 import torch
 from pytorch_fid.inception import InceptionV3
+
+from IF_GMI.utils.stylegan import create_image
+from IF_GMI.datasets.custom_subset import SingleClassSubset
 
 sys.path.insert(0, '/workspace')
 

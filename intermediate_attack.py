@@ -14,16 +14,16 @@ from facenet_pytorch import InceptionResnetV1
 from rtpt import RTPT
 from torch.utils.data import TensorDataset
 
-from attacks.optimize import Optimization
-from datasets.custom_subset import ClassSubset
-from metrics.classification_acc import ClassificationAccuracy
-from metrics.fid_score import FID_Score
-from metrics.distance_metrics import DistanceEvaluation
-from metrics.prdc import PRDC
-from utils.logger import *
-from utils.datasets import (create_target_dataset, get_facescrub_idx_to_class,
+from IF_GMI.attacks.optimize import Optimization
+from IF_GMI.datasets.custom_subset import ClassSubset
+from IF_GMI.metrics.classification_acc import ClassificationAccuracy
+from IF_GMI.metrics.fid_score import FID_Score
+from IF_GMI.metrics.distance_metrics import DistanceEvaluation
+from IF_GMI.metrics.prdc import PRDC
+from IF_GMI.utils.logger import *
+from IF_GMI.utils.datasets import (create_target_dataset, get_facescrub_idx_to_class,
                                          get_stanford_dogs_idx_to_class)
-from utils.stylegan import create_image, load_generator
+from IF_GMI.utils.stylegan import create_image, load_generator
 
 
 if __name__ == '__main__':

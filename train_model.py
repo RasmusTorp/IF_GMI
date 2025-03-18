@@ -4,8 +4,8 @@ import time
 
 import torch
 
-from metrics.accuracy import Accuracy
-from utils.training_config_parser import TrainingConfigParser
+from IF_GMI.metrics.accuracy import Accuracy
+from IF_GMI.utils.training_config_parser import TrainingConfigParser
 
 
 if __name__ == '__main__':

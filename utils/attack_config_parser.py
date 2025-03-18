@@ -4,8 +4,9 @@ import torch
 import torch.optim as optim
 import torchvision.transforms as T
 import yaml
-from attacks.initial_selection import find_initial_w
-from models.classifier import Classifier
+
+from IF_GMI.attacks.initial_selection import find_initial_w
+from IF_GMI.models.classifier import Classifier
 
 
 class AttackConfigParser:
@@ -18,18 +19,18 @@ class AttackConfigParser:
             config['attack']['targets'] = list(range(i)) if i > 0 else 0
         self._config = config
 
-    def create_target_model(self):
-        if 'target_model' in self._config:
-            config = self._config['target_model']
-            model = Classifier(num_classes=config['num_classes'],
-                               architecture=config['architecture'])
-            model.load_state_dict(torch.load(config['weights']))
-        else:
-            raise RuntimeError('No target model stated in the config file.')
+    # def create_target_model(self):
+    #     if 'target_model' in self._config:
+    #         config = self._config['target_model']
+    #         model = Classifier(num_classes=config['num_classes'],
+    #                            architecture=config['architecture'])
+    #         model.load_state_dict(torch.load(config['weights']))
+    #     else:
+    #         raise RuntimeError('No target model stated in the config file.')
 
-        model.eval()
-        self.model = model
-        return model, config['architecture']
+    #     model.eval()
+    #     self.model = model
+    #     return model, config['architecture']
 
     def get_target_dataset(self):
         return self._config['dataset']
@@ -111,24 +112,24 @@ class AttackConfigParser:
         targets = targets.to(device)
         return targets
 
-    def create_saved_config(self):
-        lr = self.optimizer['Adam']['lr']
+    # def create_saved_config(self):
+    #     lr = self.optimizer['Adam']['lr']
 
-        tmp = self.attack['targets']
-        self.attack['targets'] = len(tmp)
-        saved_config = {
-            **self.attack, **self.intermediate,
-            **self.candidates,
-            'GAN model': self.stylegan_model,
-            'target dataset': self.dataset,
-            'result path': self.result_path,
-            'optimizer': self.optimizer,
-            'lr': lr,
-            'target_architecture': self.model.architecture
-        }
-        self.attack['targets'] = tmp
+    #     tmp = self.attack['targets']
+    #     self.attack['targets'] = len(tmp)
+    #     saved_config = {
+    #         **self.attack, **self.intermediate,
+    #         **self.candidates,
+    #         'GAN model': self.stylegan_model,
+    #         'target dataset': self.dataset,
+    #         'result path': self.result_path,
+    #         'optimizer': self.optimizer,
+    #         'lr': lr,
+    #         'target_architecture': self.model.architecture
+    #     }
+    #     self.attack['targets'] = tmp
 
-        return saved_config
+    #     return saved_config
 
     def create_attack_transformations(self):
         transformation_list = []

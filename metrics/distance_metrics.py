@@ -1,67 +1,70 @@
 import torch
 import torchvision.transforms as T
-from datasets.celeba import CelebA1000
-from datasets.custom_subset import SingleClassSubset
-from datasets.facescrub import FaceScrub
-from datasets.stanford_dogs import StanfordDogs
+
 from torch.utils.data import DataLoader
 from torch.utils.data.dataset import TensorDataset
 from torchvision.transforms.transforms import Resize
-from utils.stylegan import create_image
 
+from IF_GMI.utils.stylegan import create_image
+
+# from datasets.celeba import CelebA1000
+from IF_GMI.datasets.custom_subset import SingleClassSubset
+# from datasets.facescrub import FaceScrub
+# from datasets.stanford_dogs import StanfordDogs
 
 class DistanceEvaluation():
 
     def __init__(self, layer_num, model, img_size, center_crop_size, dataset,
                  seed):
         self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
-        self.dataset_name = dataset
+        # self.dataset_name = dataset
         self.model = model
         self.center_crop_size = center_crop_size
         self.img_size = img_size
         self.seed = seed
-        self.train_set = self.prepare_dataset()
+        # self.train_set = self.prepare_dataset()
+        self.train_set = dataset
         self.smallest_distances = {i: [] for i in range(layer_num)}
         self.mean_distances_list = {i: [['target', 'mean_dist']] for i in range(layer_num)}
 
-    def prepare_dataset(self):
-        # Build the datasets
-        if self.dataset_name == 'facescrub':
-            transform = T.Compose([
-                T.Resize((self.img_size, self.img_size), antialias=True),
-                T.ToTensor(),
-                T.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])
-            ])
-            train_set = FaceScrub(group='all',
-                                  train=True,
-                                  transform=transform,
-                                  split_seed=self.seed)
-        elif self.dataset_name == 'celeba_identities':
-            transform = T.Compose([
-                T.Resize(self.img_size, antialias=True),
-                T.ToTensor(),
-                T.CenterCrop((self.img_size, self.img_size)),
-                T.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])
-            ])
-            train_set = CelebA1000(train=True,
-                                   transform=transform,
-                                   split_seed=self.seed)
-        elif 'stanford_dogs' in self.dataset_name:
-            transform = T.Compose([
-                T.Resize((self.img_size, self.img_size), antialias=True),
-                T.ToTensor(),
-                T.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])
-            ])
-            train_set = StanfordDogs(train=True,
-                                     cropped=True,
-                                     transform=transform,
-                                     split_seed=self.seed)
-        else:
-            raise RuntimeError(
-                f'{self.dataset_name} is no valid dataset name. Chose of of [facescrub, celeba_identities, stanford_dogs].'
-            )
+    # def prepare_dataset(self):
+    #     # Build the datasets
+    #     if self.dataset_name == 'facescrub':
+    #         transform = T.Compose([
+    #             T.Resize((self.img_size, self.img_size), antialias=True),
+    #             T.ToTensor(),
+    #             T.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])
+    #         ])
+    #         train_set = FaceScrub(group='all',
+    #                               train=True,
+    #                               transform=transform,
+    #                               split_seed=self.seed)
+    #     elif self.dataset_name == 'celeba_identities':
+    #         transform = T.Compose([
+    #             T.Resize(self.img_size, antialias=True),
+    #             T.ToTensor(),
+    #             T.CenterCrop((self.img_size, self.img_size)),
+    #             T.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])
+    #         ])
+    #         train_set = CelebA1000(train=True,
+    #                                transform=transform,
+    #                                split_seed=self.seed)
+    #     elif 'stanford_dogs' in self.dataset_name:
+    #         transform = T.Compose([
+    #             T.Resize((self.img_size, self.img_size), antialias=True),
+    #             T.ToTensor(),
+    #             T.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])
+    #         ])
+    #         train_set = StanfordDogs(train=True,
+    #                                  cropped=True,
+    #                                  transform=transform,
+    #                                  split_seed=self.seed)
+    #     else:
+    #         raise RuntimeError(
+    #             f'{self.dataset_name} is no valid dataset name. Chose of of [facescrub, celeba_identities, stanford_dogs].'
+    #         )
 
-        return train_set
+    #     return train_set
 
     def get_eval_dist(self, layer):
         smallest_distances = torch.cat(self.smallest_distances[layer], dim=0)

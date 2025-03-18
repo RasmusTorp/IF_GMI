@@ -7,9 +7,9 @@ import torchvision.transforms as T
 from torch.utils import data
 from torch.utils.data import random_split
 
-from datasets.celeba import CelebA1000
-from datasets.facescrub import FaceScrub
-from datasets.stanford_dogs import StanfordDogs
+# from datasets.celeba import CelebA1000
+# from datasets.facescrub import FaceScrub
+# from datasets.stanford_dogs import StanfordDogs
 
 
 def get_normalization():
@@ -46,13 +46,13 @@ def get_subsampled_dataset(dataset,
 
 
 def get_facescrub_idx_to_class():
-    with open('utils/files/facescrub_idx_to_class.pkl', 'rb') as f:
+    with open('Plug_and_Play_Attacks/utils/files/facescrub_idx_to_class.pkl', 'rb') as f:
         idx_to_class = pickle.load(f)
     return idx_to_class
 
 
 def get_facescrub_class_to_idx():
-    with open('utils/files/facescrub_class_to_idx.pkl', 'rb') as f:
+    with open('Plug_and_Play_Attacks/utils/files/facescrub_class_to_idx.pkl', 'rb') as f:
         class_to_idx = pickle.load(f)
     return class_to_idx
 
@@ -72,25 +72,25 @@ def get_celeba_attr_to_idx(list_attr_file='data/celeba/list_attr_celeba.txt'):
 
 
 def get_stanford_dogs_idx_to_class():
-    with open('utils/files/stanford_dogs_idx_to_class.pkl', 'rb') as f:
+    with open('Plug_and_Play_Attacks/utils/files/stanford_dogs_idx_to_class.pkl', 'rb') as f:
         idx_to_class = pickle.load(f)
     return idx_to_class
 
 
 def get_stanford_dogs_class_to_idx():
-    with open('utils/files/stanford_dogs_class_to_idx.pkl', 'rb') as f:
+    with open('Plug_and_Play_Attacks/utils/files/stanford_dogs_class_to_idx.pkl', 'rb') as f:
         class_to_idx = pickle.load(f)
     return class_to_idx
 
 
-def create_target_dataset(dataset_name, transform):
-    if dataset_name.lower() == 'facescrub':
-        return FaceScrub(group='all',
-                         train=True,
-                         transform=transform)
-    elif dataset_name.lower() == 'celeba_identities':
-        return CelebA1000(train=True, transform=transform)
-    elif 'stanford_dogs' in dataset_name.lower():
-        return StanfordDogs(train=True, cropped=True, transform=transform)
-    else:
-        print(f'{dataset_name} is no valid dataset.')
+# def create_target_dataset(dataset_name, transform):
+#     if dataset_name.lower() == 'facescrub':
+#         return FaceScrub(group='all',
+#                          train=True,
+#                          transform=transform)
+#     elif dataset_name.lower() == 'celeba_identities':
+#         return CelebA1000(train=True, transform=transform)
+#     elif 'stanford_dogs' in dataset_name.lower():
+#         return StanfordDogs(train=True, cropped=True, transform=transform)
+#     else:
+#         print(f'{dataset_name} is no valid dataset.')

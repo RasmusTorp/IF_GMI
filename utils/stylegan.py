@@ -61,8 +61,8 @@ def load_generator(filepath):
     Returns:
         torch.nn.Module: G_ema from torch.load
     """
-    sys.path.append('stylegan2_intermediate')
-    from stylegan2_intermediate.training.networks import Generator
+    sys.path.append('IF_GMI/stylegan2_intermediate')
+    from IF_GMI.stylegan2_intermediate.training.networks import Generator
     
     if 'afhq' in filepath:
         img_resolution = 512
