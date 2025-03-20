@@ -110,7 +110,7 @@ class Optimization():
                                                  dim=1)
             # print(self.mid_vector[-1].shape)
             mid_vector, _ = self.synthesis(
-                w_expanded, layer_in=self.mid_vector[-1], noise_mode='const', force_fp32=True)
+                ws = w_expanded, layer_in=self.mid_vector[-1], noise_mode='const', force_fp32=True)
             # print(mid_vector.shape)
             # exit()
             if self.mid_vector[-1] is not None:
@@ -126,13 +126,15 @@ class Optimization():
             w_expanded = torch.repeat_interleave(w,
                                                  repeats=num_ws,
                                                  dim=1)
-            imgs = self.synthesis(w_expanded,
+            imgs = self.synthesis(ws = w_expanded,
                                   layer_in=layer_in,
                                   noise_mode='const',
                                   force_fp32=True)
         else:
-            imgs = self.synthesis(w, layer_in=layer_in,
-                                  noise_mode='const', force_fp32=True)
+            imgs = self.synthesis(ws = w, 
+                                  layer_in=layer_in,
+                                  noise_mode='const', 
+                                  force_fp32=True)
         return imgs
 
     def clip_images(self, imgs):
