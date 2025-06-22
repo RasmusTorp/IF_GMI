@@ -99,9 +99,15 @@ class AttackConfigParser:
             targets = torch.tensor(target_classes)
             targets = torch.repeat_interleave(targets, num_candidates)
         elif target_classes == 'all':
-            targets = torch.tensor([i for i in range(self.model.num_classes)])
+            if hasattr(self, 'model'):
+                n_classes = self.model.num_classes
+            else:
+                print("Warning: AttackConfigParser has no model attribute. Assuming the evaluation model has the same number of classes as the dataset.")
+                n_classes = self._config['evaluation_model']['num_classes']
+            self.attack['targets'] = list(range(n_classes))
+            targets = torch.tensor([i for i in range(n_classes)])
             targets = torch.repeat_interleave(targets, num_candidates)
-            self.attack['targets'] = list(range(self.model.num_classes))
+            
         elif type(target_classes) == int:
             targets = torch.full(size=(num_candidates, ),
                                  fill_value=target_classes)
