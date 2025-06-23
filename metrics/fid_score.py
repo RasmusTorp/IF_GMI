@@ -47,7 +47,7 @@ class FID_Score:
         self.dataset_2 = dataset_2
     
     # get fid score for certain layer
-    def get_fid(self, layer):
+    def compute_fid(self, layer):
         pred_arr_gt = np.concatenate(self.pred_arr_gt, axis=0)
         mu1 = np.mean(pred_arr_gt, axis=0)
         sigma1 = np.cov(pred_arr_gt, rowvar=False)   
@@ -60,12 +60,12 @@ class FID_Score:
         return fid_value
         
         
-    def compute_fid(self, layer, rtpt=None):
-        self.compute_statistics(self.dataset_1, rtpt)
-        self.compute_statistics(self.dataset_2, layer, rtpt, fake=True)
+    def get_preds(self, layer, rtpt=None):
+        self.get_preds_for_dataset(self.dataset_1, rtpt)
+        self.get_preds_for_dataset(self.dataset_2, layer, rtpt, fake=True)
 
     # calculate fid
-    def compute_statistics(self, dataset, layer=None, rtpt=None, fake=False):
+    def get_preds_for_dataset(self, dataset, layer=None, rtpt=None, fake=False):
         self.inception_model.eval()
         dataloader = torch.utils.data.DataLoader(dataset,
                                                  batch_size=self.batch_size,
