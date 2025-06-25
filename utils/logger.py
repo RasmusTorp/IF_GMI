@@ -9,7 +9,7 @@ from torchvision.utils import save_image
 from pathlib import Path
 from IF_GMI.utils.attack_config_parser import AttackConfigParser
 
-from IF_GMI.utils.stylegan import create_image
+from IF_GMI.utils.stylegan import crop_and_resize
 import wandb
 
 class Tee(object):
@@ -44,7 +44,7 @@ def log_images(config, path, eval_model, label, layer_num, final_imgs, idx_to_cl
     # Log images
     for layer in range(layer_num):
         imgs_original = final_imgs[layer][:num_imgs]
-        log_imgs = create_image(
+        log_imgs = crop_and_resize(
             imgs_original, crop_size=config.attack_center_crop, resize=config.attack_resize).cpu()
         log_targets = torch.tensor([label for _ in range(num_imgs)])
         output = eval_model(log_imgs).cpu()

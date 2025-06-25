@@ -4,7 +4,7 @@ import torch
 from torch.utils.data import DataLoader
 from torch.utils.data.dataset import TensorDataset
 
-from IF_GMI.utils.stylegan import create_image
+from IF_GMI.utils.stylegan import crop_and_resize
 from IF_GMI.metrics.accuracy import Accuracy, AccuracyTopK
 
 
@@ -20,7 +20,7 @@ class ClassificationAccuracy():
         self.total_confidences = {i: [] for i in range(layer_num)}
         self.maximum_confidences = {i: [] for i in range(layer_num)}
 
-    def compute_acc(self,
+    def compute_confidences(self,
                     layer,
                     images,
                     targets,
@@ -39,7 +39,7 @@ class ClassificationAccuracy():
                     DataLoader(dataset, batch_size=batch_size, shuffle=False)):
                 imgs, target_batch = imgs.to(
                     self.device), target_batch.to(self.device)
-                imgs = create_image(imgs,
+                imgs = crop_and_resize(imgs,
                                     crop_size=config.attack_center_crop,
                                     resize=resize)
                 # imgs = imgs.to(self.device)

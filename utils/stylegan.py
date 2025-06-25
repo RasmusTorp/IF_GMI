@@ -44,7 +44,7 @@ def save_images(imgs: torch.tensor, folder, filename, center_crop=800):
         torchvision.utils.save_image(img, path)
 
 # transform images
-def create_image(imgs, crop_size=None, resize=None):
+def crop_and_resize(imgs, crop_size=None, resize=None):
     if crop_size is not None:
         imgs = F.center_crop(imgs, (crop_size, crop_size))
     if resize is not None:

@@ -5,7 +5,7 @@ from torch.utils.data import DataLoader
 from torch.utils.data.dataset import TensorDataset
 from torchvision.transforms.transforms import Resize
 
-from IF_GMI.utils.stylegan import create_image
+from IF_GMI.utils.stylegan import crop_and_resize
 
 # from datasets.celeba import CelebA1000
 from IF_GMI.datasets.custom_subset import SingleClassSubset
@@ -93,7 +93,7 @@ class DistanceEvaluation():
                                     shuffle=False):
                 with torch.no_grad():
                     image = image[0]
-                    imgs = create_image(image, crop_size=self.center_crop_size, resize=(
+                    imgs = crop_and_resize(image, crop_size=self.center_crop_size, resize=(
                         self.img_size, self.img_size))
                     imgs = imgs.to(self.device)
                     outputs = self.model(imgs)

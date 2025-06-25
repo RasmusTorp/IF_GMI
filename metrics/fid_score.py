@@ -17,7 +17,7 @@ import pytorch_fid.fid_score
 import torch
 from pytorch_fid.inception import InceptionV3
 
-from IF_GMI.utils.stylegan import create_image
+from IF_GMI.utils.stylegan import crop_and_resize
 
 IMAGE_EXTENSIONS = ('bmp', 'jpg', 'jpeg', 'pgm', 'png', 'ppm',
                     'tif', 'tiff', 'webp')
@@ -76,20 +76,20 @@ class FID_Score:
         pred_arr = np.empty((len(dataset), self.dims))
         start_idx = 0
         max_iter = int(len(dataset) / self.batch_size)
-        for step, (x, y) in enumerate(dataloader):
-            with torch.no_grad():
+        with torch.no_grad():
+            for step, (x, y) in enumerate(dataloader):
                 # inversion results
                 if fake:
-                    x = create_image(x, crop_size=self.crop_size, resize=299)
+                    x = crop_and_resize(x, crop_size=self.crop_size, resize=299)
                 x = x.to(self.device)
                 pred = self.inception_model(x)[0]
-            pred = pred.squeeze(3).squeeze(2).cpu().numpy()
-            pred_arr[start_idx:start_idx + pred.shape[0]] = pred
-            start_idx = start_idx + pred.shape[0]
+                pred = pred.squeeze(3).squeeze(2).cpu().numpy()
+                pred_arr[start_idx:start_idx + pred.shape[0]] = pred
+                start_idx = start_idx + pred.shape[0]
 
-            if rtpt:
-                rtpt.step(
-                    subtitle=f'FID Score Computation step {step} of {max_iter}')
+                if rtpt:
+                    rtpt.step(
+                        subtitle=f'FID Score Computation step {step} of {max_iter}')
         if fake:
             self.pred_arr_fake[layer].append(pred_arr)
         else:
